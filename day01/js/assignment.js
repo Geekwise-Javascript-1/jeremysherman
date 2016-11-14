@@ -23,6 +23,12 @@ console.log(text, sum);
 
 
 
+//var b = (30).toString(16); correct string
+//var b = parseInt('0x'+(30)).toString(16)); how you get the hex number in javascript because its a base 16 system.
+
+//var d = a + b;
+//console.log (c + d);
+
 
 
 
