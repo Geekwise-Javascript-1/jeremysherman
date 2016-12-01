@@ -16,12 +16,30 @@ console.log(strength);
 
 
 for(var i = 0; i < monsters.length; i++){
-    console.log(monsters[i]);
+    console.log(monsters[i] + ' has a strength of ' + strength[i] + ' points.');
 }
 
 // while loop
 
+var j = 0;
+while( j < monsters.length ){
+    console.log(monsters[j] + ' has a strength of ' + strength[j] + ' points.');
+    j++; // j = j + 1 // j-- // i++; This is the incrementer and i--; decrementer
+}
 
-for (var m = 0; m < 5; m++){
-    console.log( monsters[m] + ' has a strength of ' + strength[m] + ' points');
-};
+// assignment example in class //
+//function paul(){
+//    var msg = "my fav movie is ";
+//    //alert(msg + mov);
+//    console.log('before the return');
+//    return msg + mov; 
+//    console.log('after the return'); //after the return this won't run
+//};
+//
+//var exp = (){
+//    var userMov = prompt('what is your fav movie?');
+//    //dec(userMov);
+//    alert( paul(userMov) );
+//    console.log('after the alert');
+//}();
+

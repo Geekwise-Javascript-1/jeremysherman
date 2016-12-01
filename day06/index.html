@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>day06</title>
+<link rel="stylesheet" type="text/css" href="css/css.css">
+</head>
+<body>
+
+<form class=turkeydayform>
+<input type=button class=button value="Thanksgiving Shopping List" 
+onClick="var listArr = [];
+var toDo = confirm('Would you like to make a thanksgiving grocery list?');
+
+if(toDo == true){
+var loop = function(toDo){
+    var loops = true;
+    while(loops === true){
+        var food = prompt('Enter thanksgiving item to pickup');
+        listArr.push(food);
+        var loops = confirm('Thanksgiving Ingredient Added. Add another?');   
+    };
+
+    console.log(listArr);
+    
+}();
+alert('Turkey Day Shopping list: ' + '\n' + listArr.join('\n'));
+
+}else {
+    alert('Fridge is stocked and turkeys in the oven. \nEnjoy your time with your family.');
+};">
+</form>
+
+</body>
+<!--<script src='js/script.js'></script>-->
+<script src='js/assignment.js'></script>
+</html>
