@@ -46,25 +46,41 @@ w.addEventListener('click', function(){
 
 function moveNorth(){
     console.log('moving north');
+    statusCell(thisCell, 'inactive');
+    thisCell = [ thisCell[0]-1, thisCell[1]];
+    statusCell(thisCell, 'active');
+    checkWalls();
 }
-
 
 function moveEast(){
     console.log('moving east');
+    statusCell(thisCell, 'inactive');
+    thisCell = [ thisCell[0], thisCell[1]+1];
+    statusCell(thisCell, 'active');
+    checkWalls();
 }
 
 function moveSouth(){
     console.log('moving south');
+    statusCell(thisCell, 'inactive');
+    thisCell = [ thisCell[0]+1, thisCell[1]];
+    statusCell(thisCell, 'active');
+    checkWalls();
 }
 
 function moveWest(){
     console.log('moving west');
+    statusCell(thisCell, 'inactive');
+    thisCell = [ thisCell[0], thisCell[1]-1];
+    statusCell(thisCell, 'active');
+    checkWalls();
 }
 
 addEventListener('keydown', function(evt){
     evt.preventDefault();
     if(evt.keyCode === 87 || evt.keyCode === 38){
         moveNorth();
+        checkWalls();
     }else if(evt.keyCode === 68 || evt.keyCode === 39){
         moveEast();
     }else if(evt.keyCode === 83 || evt.keyCode === 40){
@@ -167,10 +183,14 @@ function statusCell(cell, status){
         case 'active':
             maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('active');
             break;
+        case 'inactive':
+            maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.remove('active');
+            break;
         case 'finish':
             maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('exit');
             break;
     }
+    return cell;
 }
 
 
@@ -207,6 +227,31 @@ function gridBuilder(){ //this creates <table>
                 }
             }
                   
+        }
+    }
+}
+
+function checkWalls(){
+    var walls = cells[ thisCell[0] ][ thisCell[1] ];
+    console.log(walls);
+    for(var i = 0; i < 4; i++){
+        switch( i ){
+            case 0:
+                console.log(walls[i]);
+                walls[i] ? n.disabled = false : n.disabled = true;
+                break;
+            case 1:
+                console.log(walls[i]);
+                walls[i] ? e.disabled = false : e.disabled = true;
+                break;
+            case 2:
+                console.log(walls[i]);
+                walls[i] ? s.disabled = false : s.disabled = true;
+                break;
+            case 3:
+                console.log(walls[i]);
+                walls[i] ? w.disabled = false : w.disabled = true;
+                break;
         }
     }
 }
