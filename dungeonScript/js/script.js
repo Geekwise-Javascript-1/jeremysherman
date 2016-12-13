@@ -6,18 +6,36 @@
 /*var hero = {
     prompt('what is your name hero');
 }; //empty 'hero' object*/
-var hero = {}; //empty hero object
+var hero = {
+    name: 'Mithias',
+    hp: 15
+};
 //hero.name = prompt('What is thy name hero?');
 
 var monsters = []; //empty monsters array
 var monTypes = ['Demogorgon', 'Stiches', 'Sorceress', 'Mephisto', 'Diablo', 'Thrall', 'Gorgon', 'Necromancer', 'Medusa', 'Hobgoblin'];
+var monster;
 function Monster(name, hp){
     this.name = name,
     this.hp = hp
 }
+function generateMonsters(){
+    var totMonsters = Math.round(Math.random() * 10);
+    console.log('total monsters: ' + totMonsters);
+    for(var i = 0; i < totMonsters; i++){
+        monsters[i] = new Monster();
+        monsters[i].name = monTypes[ Math.floor(Math.random() * monTypes.length) ];
+        monsters[i].hp = Math.ceil(Math.random() * 10);
+    }
+    console.log(monsters);
+}
+generateMonsters();
 
-var myMonster = new Monster('Carl', 50);
-console.log(myMonster);
+
+//var myMonster = new Monster('Carl', 50);
+//console.log(myMonster);
+//var myOtherMonster = new Monster('Negan', 150);
+//console.log(myOtherMonster);
 
 var tableHolder = document.querySelector('#table');
 //tableHolder = document.getElementById('table');
@@ -52,46 +70,46 @@ w.addEventListener('click', function(){
 });
 
 function moveNorth(){
-    console.log('moving north');
     statusCell(thisCell, 'inactive');
     thisCell = [ thisCell[0]-1, thisCell[1]];
     statusCell(thisCell, 'active');
     checkWalls();
+    encounter();
 }
 
 function moveEast(){
-    console.log('moving east');
     statusCell(thisCell, 'inactive');
     thisCell = [ thisCell[0], thisCell[1]+1];
     statusCell(thisCell, 'active');
     checkWalls();
+    encounter();
 }
 
 function moveSouth(){
-    console.log('moving south');
     statusCell(thisCell, 'inactive');
     thisCell = [ thisCell[0]+1, thisCell[1]];
     statusCell(thisCell, 'active');
     checkWalls();
+    encounter();
 }
 
 function moveWest(){
-    console.log('moving west');
     statusCell(thisCell, 'inactive');
     thisCell = [ thisCell[0], thisCell[1]-1];
     statusCell(thisCell, 'active');
     checkWalls();
+    encounter();
 }
 
 addEventListener('keydown', function(evt){
     evt.preventDefault();
-    if(evt.keyCode === 87 && !n.disabled || evt.keyCode === 38 && !n.disabled){
+    if( (evt.keyCode === 87 || evt.keyCode === 38) && !n.disabled ){ //option to group command
         moveNorth();    
     }else if(evt.keyCode === 68 && !e.disabled || evt.keyCode === 39 && !e.disabled){
         moveEast();
-    }else if(evt.keyCode === 83 && !e.disabled || evt.keyCode === 40 && !s.disabled){
+    }else if(evt.keyCode === 83 && !s.disabled || evt.keyCode === 40 && !s.disabled){
         moveSouth();
-    }else if(evt.keyCode === 65 && !e.disabled || evt.keyCode === 37 && !w.disabled){
+    }else if(evt.keyCode === 65 && !w.disabled || evt.keyCode === 37 && !w.disabled){
         moveWest();
     }
 });
@@ -176,15 +194,17 @@ var grid = function(y, x){
 
 function gridStart(path){
     gridBuilder();
-    
-    console.log(path);
     thisCell = statusCell( path[0], 'active' );
     exitCell = statusCell( path[path.length - 1], 'finish' );
     checkWalls();
-    console.log(thisCell);
+
 }
 
 function statusCell(cell, status){
+    if(maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.contains('exit')){
+        alert('You Win!');
+        location.reload();
+    }
     switch(status){
         case 'active':
             maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('active');
@@ -240,25 +260,93 @@ function gridBuilder(){ //this creates <table>
 
 function checkWalls(){
     var walls = cells[ thisCell[0] ][ thisCell[1] ];
-    console.log(walls);
     for(var i = 0; i < 4; i++){
         switch( i ){
             case 0:
-                console.log(walls[i]);
                 walls[i] ? n.disabled = false : n.disabled = true;
                 break;
             case 1:
-                console.log(walls[i]);
                 walls[i] ? e.disabled = false : e.disabled = true;
                 break;
             case 2:
-                console.log(walls[i]);
                 walls[i] ? s.disabled = false : s.disabled = true;
                 break;
             case 3:
-                console.log(walls[i]);
                 walls[i] ? w.disabled = false : w.disabled = true;
                 break;
+        }
+    }
+}
+
+
+function encounter(){
+    console.log(monsters.length);
+    console.log(cells.length);
+    console.log(cells[0].length);
+    
+    // probability of encountering
+    // how many monsters? 
+    // divide by total number of cells
+    
+//  console.log( Math.round(monsters.length / (cells.length * cells[0].length) * 100) );
+
+    var probEnc = Math.round(monsters.length / (cells.length * cells[0].length) * 100);
+    console.log( probEnc + '% probability of encounter' );
+    
+    var chanceEnc = Math.ceil(Math.random() * 100);
+    console.log('chance of encounter: ' + chanceEnc);
+    
+    if(chanceEnc <= probEnc){
+        console.log('You ran into a nasty!');
+        
+        monster = monsters.splice( Math.floor(Math.random() * monsters.length), 1 )[0];
+//        console.log(monster);
+//        console.log(monsters);
+        alert('You have run into ' + monster .name + '!!')
+        battle(monster);
+    }    
+}
+
+function battle(player){
+    console.log(player);
+    console.log(hero);
+    
+    var takingDmg;
+    if(player.name === hero.name){
+        takingDmg = monster
+    }else{
+        takingDmg = hero;
+    }
+    
+    while(player.hp > 0 && takingDmg.hp > 0 ){
+        console.log(player.name + ' has ' + player.hp)
+        
+        var hit = Math.ceil(player.hp / 3);
+        takingDmg.hp -= hit;
+        
+        console.log(takingDmg.name + ' has taken ' + hit + ' damage!');
+        checkIfAlive(takingDmg, hit);
+    }
+}
+
+function checkIfAlive(takingDmg, hit){
+    console.log(takingDmg.name);
+    console.log(takingDmg.hp);
+    
+    if(takingDmg.hp <= 0){
+        if(takingDmg.name === hero.name){
+            alert('You are dead.')
+            location.reload();
+        }else{
+            alert('Monster has been slain.');
+        }
+    }else{
+        if(takingDmg.name === hero.name){
+            alert('You\'ve taken ' + hit + ' damage from combat!');
+            battle(hero);
+        }else{
+            alert('You shot the ' + monster.name + ' for ' + hit + '!!');
+            battle(monster);
         }
     }
 }
