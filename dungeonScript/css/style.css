@@ -136,6 +136,17 @@ section#nav span {
     display: flex;
     align-items: center;
 }
+section#nav button:hover{
+    background-color: hsla(0, 0%, 100%, 1);
+    cursor: pointer;
+    color: #000;
+}
+section#nav button:disabled {
+    color: hsla(0, 0%, 0%, .85);
+    background-color: hsla(0, 0%, 50%, .35);
+    border-color: hslahsla(0, 0%, 0%, .85);
+    cursor: default;
+}
 section#nav button {
     color: hsl(0, 0%, 95%);
     background-color: hsl(0, 0%, 9%);

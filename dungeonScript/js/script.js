@@ -11,6 +11,13 @@ var hero = {}; //empty hero object
 
 var monsters = []; //empty monsters array
 var monTypes = ['Demogorgon', 'Stiches', 'Sorceress', 'Mephisto', 'Diablo', 'Thrall', 'Gorgon', 'Necromancer', 'Medusa', 'Hobgoblin'];
+function Monster(name, hp){
+    this.name = name,
+    this.hp = hp
+}
+
+var myMonster = new Monster('Carl', 50);
+console.log(myMonster);
 
 var tableHolder = document.querySelector('#table');
 //tableHolder = document.getElementById('table');
@@ -78,14 +85,13 @@ function moveWest(){
 
 addEventListener('keydown', function(evt){
     evt.preventDefault();
-    if(evt.keyCode === 87 || evt.keyCode === 38){
-        moveNorth();
-        checkWalls();
-    }else if(evt.keyCode === 68 || evt.keyCode === 39){
+    if(evt.keyCode === 87 && !n.disabled || evt.keyCode === 38 && !n.disabled){
+        moveNorth();    
+    }else if(evt.keyCode === 68 && !e.disabled || evt.keyCode === 39 && !e.disabled){
         moveEast();
-    }else if(evt.keyCode === 83 || evt.keyCode === 40){
+    }else if(evt.keyCode === 83 && !e.disabled || evt.keyCode === 40 && !s.disabled){
         moveSouth();
-    }else if(evt.keyCode === 65 || evt.keyCode === 37){
+    }else if(evt.keyCode === 65 && !e.disabled || evt.keyCode === 37 && !w.disabled){
         moveWest();
     }
 });
@@ -174,7 +180,7 @@ function gridStart(path){
     console.log(path);
     thisCell = statusCell( path[0], 'active' );
     exitCell = statusCell( path[path.length - 1], 'finish' );
-    
+    checkWalls();
     console.log(thisCell);
 }
 
@@ -185,6 +191,7 @@ function statusCell(cell, status){
             break;
         case 'inactive':
             maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.remove('active');
+            maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('visited');
             break;
         case 'finish':
             maze.firstChild.childNodes[cell[0]].childNodes[cell[1]].classList.add('exit');
@@ -210,7 +217,7 @@ function gridBuilder(){ //this creates <table>
             for(var k = 0; k < 4; k++){
                 switch (k) {
                     case 0:
-                        cells[i][j][k] ?  thisCell.classList.remove('bt') : thisCell.classList.add('bt');
+                        cells[i][j][k] ? thisCell.classList.remove('bt') : thisCell.classList.add('bt');
                         break;
                     case 1: 
                         cells[i][j][k] ? thisCell.classList.remove('br') : thisCell.classList.add('br');
